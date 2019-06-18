@@ -1,26 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as style from './App.css';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import { BrowserRouter } from 'react-router-dom';
+import { RoutedContent } from './router';
+import { Header } from './components/header';
+import { Footer } from './components/footer';
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export interface IAppProps {
+
 }
 
-export default App;
+export class App extends React.Component<IAppProps> {
+
+  private store = store();
+
+  public render() {
+    return (
+      <Provider store={this.store} >
+        <div className={style.container}>
+          <Header />
+          <RoutedContent />
+          <Footer />
+        </div>
+      </Provider>
+    )
+  }
+}
+
+export class ClientApp extends React.Component<IAppProps> {
+  public render() {
+    return (
+      <BrowserRouter>
+        <App {...this.props} />
+      </BrowserRouter>
+    );
+  }
+}
